@@ -1,0 +1,35 @@
+.track-search-container {
+	position: relative;
+	top: 10px;
+}
+.search-bar {
+	display: flex;
+	align-items: center;
+  	margin-bottom: 10px;
+	border-radius: 10px;
+	border: 1px solid #ccc;
+}
+.track-search-container input {
+	display: block;
+	background: #fff;
+	margin: 10px;
+	width: 120px;
+	border: none;
+  font-family: 'Proxima Nova', Georgia, sans-serif;
+	padding: 4px 4px 4px 10px;
+	outline: none;
+}
+
+.search {
+	margin-left: 5px;
+	cursor: pointer;
+	cursor: pointer;
+  color: white;
+  font-size: 15px;
+}
+
+button {
+	background: none;
+	border: none;
+	outline: none;
+}

@@ -1,0 +1,26 @@
+.controls-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  svg {
+    color: #b3b3b3;
+    transition: 0.2s ease-in-out;
+    &:hover {
+      color: white;
+    }
+  }
+  .state {
+    svg {
+      color: white;
+      font-size: 2.5rem;
+      &:hover {
+        color: #1db954;
+      }
+    }
+  }
+  .previous,
+  .next {
+    font-size: 2rem;
+  }
+}
