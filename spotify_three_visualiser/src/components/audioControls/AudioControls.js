@@ -5,122 +5,81 @@
 //LOOP
 //REPEAT
 //VOLUME
-import React from "react";
-import styled from "styled-components";
-import {
-  BsFillPlayCircleFill,
-  BsFillPauseCircleFill,
-  BsShuffle,
-} from "react-icons/bs";
-import { CgPlayTrackNext, CgPlayTrackPrev } from "react-icons/cg";
-import { FiRepeat } from "react-icons/fi";
+import React,{useEffect} from "react";
+// import styled from "styled-components";
+import { Container } from "react-bootstrap";
+
 import { useStateProvider } from "../../utils/stateProvider";
 import axios from "axios";
 import { reducerCases } from "../../utils/Constants";
-import SpotifyWebApi from "spotify-web-api-node";
 
-const spotifyApi = new SpotifyWebApi({
-  clientId: "1f42356ed83f46cc9ffd35c525fc8541",
-});
-export default function PlayerControls() {
-  const token = spotifyApi.getAccessToken();
-  const [{ playerState }, dispatch] = useStateProvider();
+// import SpotifyWebApi from "spotify-web-api-node";
 
-  const changeState = async () => {
-    const state = playerState ? "pause" : "play";
-    await axios.put(
-      `https://api.spotify.com/v1/me/player/${state}`,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
+// const spotifyApi = new SpotifyWebApi({
+//   clientId: "1f42356ed83f46cc9ffd35c525fc8541",
+// });
+export default function CurrentTrack() {
+  const [{ token, currentlyPlaying }, dispatch] = useStateProvider();
+  useEffect(() => {
+    const getCurrentTrack = async () => {
+      const response = await axios.get(
+        "https://api.spotify.com/v1/me/player/currently-playing",
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.data !== "") {
+        const { item } = response.data;
+        const currentlyPlaying = {
+          id: item.id,
+          name: item.name,
+          artists: item.artists.map((artist) => artist.name),
+          image: item.album.images[2] && item.album.images[2].url,
+        };
+        dispatch({ type: reducerCases.SET_PLAYING, currentlyPlaying });
       }
-    );
-    dispatch({
-      type: reducerCases.SET_PLAYER_STATE,
-      playerState: !playerState,
-    });
-  };
-  const changeTrack = async (type) => {
-    await axios.post(
-      `https://api.spotify.com/v1/me/player/${type}`,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
-    dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
-    const response1 = await axios.get(
-      "https://api.spotify.com/v1/me/player/currently-playing",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
-    if (response1.data !== "") {
-      const currentPlaying = {
-        id: response1.data.item.id,
-        name: response1.data.item.name,
-        artists: response1.data.item.artists.map((artist) => artist.name),
-        image: response1.data.item.album.images[2].url,
-      };
-      dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
-    } else {
-      dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: null });
-    }
-  };
+    };
+    getCurrentTrack();
+  }, [token, dispatch, currentlyPlaying]);
   return (
     <Container>
-      <div className="shuffle">
-        <BsShuffle />
-      </div>
-      <div className="previous">
-        <CgPlayTrackPrev onClick={() => changeTrack("previous")} />
-      </div>
-      <div className="state">
-        {playerState ? (
-          <BsFillPauseCircleFill onClick={changeState} />
-        ) : (
-          <BsFillPlayCircleFill onClick={changeState} />
-        )}
-      </div>
-      <div className="next">
-        <CgPlayTrackNext onClick={() => changeTrack("next")} />
-      </div>
-      <div className="repeat">
-        <FiRepeat />
-      </div>
+      {currentlyPlaying && (
+        <div className="track">
+          <div className="track_image">
+            <img src={currentlyPlaying.image} alt="currentlyPlayingImg" />
+          </div>
+          <div className="track_info">
+            <h4>{currentlyPlaying.name}</h4>
+            <h6>{currentlyPlaying.artists.join(", ")}</h6>
+          </div>
+        </div>
+      )}
     </Container>
   );
 }
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  svg {
-    color: #b3b3b3;
-    transition: 0.2s ease-in-out;
-    &:hover {
-      color: white;
-    }
-  }
-  .state {
-    svg {
-      color: white;
-    }
-  }
-  .previous,
-  .next,
-  .state {
-    font-size: 2rem;
-  }
-`;
+// const Container = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   gap: 2rem;
+//   svg {
+//     color: #b3b3b3;
+//     transition: 0.2s ease-in-out;
+//     &:hover {
+//       color: white;
+//     }
+//   }
+//   .state {
+//     svg {
+//       color: white;
+//     }
+//   }
+//   .previous,
+//   .next,
+//   .state {
+//     font-size: 2rem;
+//   }
+// `;

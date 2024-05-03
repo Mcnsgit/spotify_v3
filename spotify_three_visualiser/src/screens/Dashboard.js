@@ -1,71 +1,50 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./dashboard.module.css";
 import { AiFillClockCircle } from "react-icons/ai";
 import axios from "axios";
-import SideMenu from "../components/sidebar/SideMenu";
+import { reducerCases } from "../utils/Constants";
+import { useStateProvider } from "../utils/stateProvider";
 import MusicPlayer from "../components/visualMusicContainer/MusicPlayer";
 
-
 const Dashboard = () => {
-  const [token, setToken] = useState(null);
-  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
-  const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
-
+  const [{ token, selectedPlaylist, selectedPlaylistId }, dispatch] =
+    useStateProvider();
   useEffect(() => {
-    const fetchToken = async () => {
-      try {
-        const response = await axios.get("/token");
-        setToken(response.data.access_token);
-      } catch (error) {
-        console.error("Error fetching token:", error);
-      }
-    };
-
-    const fetchInitialPlaylist = async () => {
-      if (!selectedPlaylistId) return;
-      try {
-        const response = await axios.get(
-          `https://api.spotify.com/v1/playlists/${selectedPlaylistId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (response.data) {
-          const playlistDetails = {
-            id: response.data.id,
-            name: response.data.name,
-            description: response.data.description,
-            image: response.data.images[0]?.url,
-            tracks: response.data.tracks.items.map(({ track }) => ({
-              id: track.id,
-              name: track.name,
-              artists: track.artists.map((artist) => artist.name),
-              image: track.album.images[2]?.url,
-              duration: track.duration_ms,
-              album: track.album.name,
-              context_uri: track.album.uri,
-              track_number: track.track_number,
-            })),
-          };
-          setSelectedPlaylist(playlistDetails);
+    const getInitialPlaylist = async () => {
+      const response = await axios.get(
+        `https://api.spotify.com/v1/playlists/${selectedPlaylistId}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
         }
-      } catch (error) {
-        console.error("Error fetching playlist:", error);
-      }
+      );
+      const selectedPlaylist = {
+        id: response.data.id,
+        name: response.data.name,
+        description: response.data.description.startsWith("<a")
+          ? ""
+          : response.data.description,
+        image: response.data.images[0].url,
+        tracks: response.data.tracks.items.map(({ track }) => ({
+          id: track.id,
+          name: track.name,
+          artists: track.artists.map((artist) => artist.name),
+          image: track.album.images[2] && track.album.images[2].url,
+          duration: track.duration_ms,
+          album: track.album.name,
+          context_uri: track.album.uri,
+          track_number: track.track_number,
+        })),
+      };
+      dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist });
     };
-
-    fetchToken();
-    fetchInitialPlaylist();
-  }, [selectedPlaylistId, token]);
+    getInitialPlaylist();
+  }, [token, dispatch, selectedPlaylistId]);
 
   return (
     <>
-      <div className="sidebar">
-        <SideMenu setSelectedPlaylistId={setSelectedPlaylistId} />
-      </div>
       <div className="main_view">
         {selectedPlaylistId && (
           <>

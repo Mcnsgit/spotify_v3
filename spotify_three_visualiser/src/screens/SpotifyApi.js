@@ -1,31 +1,18 @@
-import React, { useState, useEffect } from "react";
+import {Sidebars} from "../components/sidebar/sidebars";
+import React, { useEffect } from "react";
+import Body from "../components/Body";
+import { useStateProvider } from "../utils/stateProvider";
 import axios from "axios";
-import Body from  "../components/Body";
+import { Container } from "react-bootstrap";
+import { reducerCases } from "../utils/Constants";
 
-export default function SpotifyApi() {
-  const [accessToken, setAccessToken] = useState("");
-  const [search, setSearch] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [playingTrack, setPlayingTrack] = useState(null);
-
+export default function Spotify() {
+  const [{ token }, dispatch] = useStateProvider();
   useEffect(() => {
-    const hash = window.location.hash;
-    let token = window.localStorage.getItem("key");
-    if (!token && hash) {
-      token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1];
-      window.location.hash = "";
-      window.localStorage.setItem("key", token);
-      setAccessToken(token);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!accessToken) return;
-
-    const fetchUserInfo = async () => {
+    const getUserInfo = async () => {
       const { data } = await axios.get("https://api.spotify.com/v1/me", {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: "Bearer " + token,
           "Content-Type": "application/json",
         },
       });
@@ -33,66 +20,57 @@ export default function SpotifyApi() {
         userId: data.id,
         userName: data.display_name,
       };
-      window.localStorage.setItem("userInfo", JSON.stringify(userInfo));
+
+      dispatch({ type: reducerCases.SET_USER, userInfo });
     };
-
-    fetchUserInfo();
-  }, [accessToken]);
-
-  const logout = () => {
-    setAccessToken("");
-    window.localStorage.removeItem("key");
-  }
-
-  const chooseTrack = (track) => {
-    setPlayingTrack(track);
-    setSearch("");
-  };
-
-  const handleScroll = () => {
-    const body = document.querySelector(".body_contents");
-    body.classList.toggle("body_scroll", window.pageYOffset > 0 || window.pageYOffset === 0)(body.scrollTop >= 268);
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const searchTrack = async (e) => {
-    e.preventDefault();
-    const { data } = await axios.get("https://api.spotify.com/v1/search", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        q: search,
-        type: "track",
-      },
-    });
-    setSearchResults(data.tracks.items);
-  };
-
+    getUserInfo();
+  }, [dispatch, token]);
   return (
-    <div className="spotify_body">
-      <Body
-        searchResults={searchResults}
-        setSearchResults={setSearchResults}
-        chooseTrack={chooseTrack}
-        searchTrack={searchTrack}
-        playingTrack={playingTrack}
-      />
-      <form onSubmit={searchTrack}>
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <button type="submit">
-          Search
-        </button>
-      </form>
-      <button onClick={logout}>Logout</button>
-    </div>
+    <Container>
+      <div className="spotify_body">
+        <Sidebars />
+        <div className="body">
+          <div className="body_contents">
+            <Body />          </div>
+        </div>
+      </div>
+      <div className="spotify_footer">
+      </div>
+    </Container>
   );
 }
+
+// const Container = styled.div`
+//   max-width: 100vw;
+//   max-height: 100vh;
+//   overflow: hidden;
+//   display: grid;
+//   grid-template-rows: 87vh 13vh;
+//   .spotify_body {
+//     display: grid;
+//     grid-template-columns: 17vw 85vw;
+//     hight: 100%;
+//     width: 100%;
+//     background-color: #010001;
+//   }
+//   .body {
+//     height: 100%;
+//     width: 100%;
+//     overflow: auto;
+//     margin-left: 0.5rem;
+//     border-radius: 20px;
+//     // background-color: #131313;
+//     background: rgb(28, 13, 67);
+//     background: linear-gradient(
+//       180deg,
+//       rgba(78, 71, 75, 0.8) 0%,
+//       rgba(18, 18, 18, 1) 100%
+//     );
+//     &::-webkit-scrollbar {
+//       width: 0.7rem;
+//       &-thumb {
+//         background-color: rgba(255, 255, 255, 0.2);
+//       }
+//     }
+//   }
+//     `;

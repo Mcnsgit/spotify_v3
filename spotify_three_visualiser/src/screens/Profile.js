@@ -7,7 +7,12 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchUserInfo = async () => {
-      if (token) {
+      if (!token) {
+        console.error("No token available");
+        return;  // Early exit if no token is found
+      }
+
+      try {
         const { data } = await axios.get("https://api.spotify.com/v1/me", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -20,6 +25,9 @@ export default function Profile() {
           name: data.display_name,
         };
         setUserInfo(userInfo);
+      } catch (error) {
+        console.error("Failed to fetch user info:", error);
+        setUserInfo(null); // Handle error by resetting user info
       }
     };
 
@@ -27,15 +35,15 @@ export default function Profile() {
   }, [token]);
 
   if (!userInfo) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>; // Optionally, handle loading state more gracefully
   }
 
   return (
     <div>
       <h1>Profile</h1>
-      <p>User ID: {userInfo.userId}</p>
-      <p>User URL: <a href={userInfo.userUrl}>{userInfo.userUrl}</a></p>
-      <p>Name: {userInfo.name}</p>
+      <p>User ID: {userInfo?.userId}</p>
+      <p>User URL: <a href={userInfo?.userUrl}>{userInfo?.userUrl}</a></p>
+      <p>Name: {userInfo?.name}</p>
     </div>
   );
 }
