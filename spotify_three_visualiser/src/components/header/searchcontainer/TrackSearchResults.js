@@ -1,18 +1,28 @@
 import React from "react";
-
+import "./TrackSearch.module.css";
 
 export default function TrackSearchResult({ track, chooseTrack }) {
+  function handleChooseTrack() {
+    chooseTrack(track);
+  }
+
+  if (!track) return null;
+   // Handle case where track data might be undefined
+
   return (
     <div
-      className='styles.trackResult'
+      className='TrackResults'
       style={{ cursor: "pointer" }}
-      onClick={() => chooseTrack(track)}
+      onClick={handleChooseTrack}
     >
-      <img src={track.albumUrl} alt={track.title} style={{ height: "64px", width: "64px", borderRadius: "10px" }} />
-      <div className='styles.trackInfo'>
-        <div className='styles.trackTitle'>{track.title}</div>
-        <div className='styles.textMuted'>{track.artist}</div>
+      <img src={track.albumUrl} alt={`Album cover for ${track.title}`} style={{ height: "64px", width: "64px" }} />
+      <div className="ml-3">
+        <div>{track.title}</div>
+        <div className="text-muted">{track.artist}</div>
+        <div className='textMuted'>{track.artist}</div>
       </div>
-    </div>
+      </div>
+ 
+ 
   );
 }

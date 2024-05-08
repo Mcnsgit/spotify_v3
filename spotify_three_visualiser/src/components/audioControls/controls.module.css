@@ -23,4 +23,12 @@
   .next {
     font-size: 2rem;
   }
+  .input[type="range"] {
+    width: 100%;
+    height: 5px;
+    -webkit-appearance: none;
+    background-color: #b3b3b3;
+    outline:#1db954;
+    appearance: none;
+  }
 }

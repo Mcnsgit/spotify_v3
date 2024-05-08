@@ -1,40 +1,52 @@
-import React, { useEffect } from "react";
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { useStateProvider } from "./utils/stateProvider";
-import {LibraryPage} from './screens/LibraryPage';
+import "bootstrap/dist/css/bootstrap.min.css"
+import React from "react";
 import Login from "./screens/Login";
-import Profile from "./screens/Profile";
-import MusicPlayer from "./components/visualMusicContainer/MusicPlayer";
-import SpotifyApi from "./screens/SpotifyApi";
-import Dashboard from "./screens/Dashboard";
-import styles from "./App.module.css";
+import Spotify from "./screens/SpotifyApi";
+import { Routes, Route, Navigate } from 'react-router-dom';
+// import ErrorBoundary from "./components/ErrorBoundary.js";
+import Dashboard from './screens/Dashboard';
+import Profile from './screens/Profile';
+import { AppProvider } from "./utils/AppContextProvider.js";
+import {reducer} from "./utils/AppState.js";
+import MusicPlayer from "./components/visualMusicContainer/MusicPlayer.js";
 
-function App() {
-  const [{ token }, dispatch] = useStateProvider();
-
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash) {
-      const newToken = hash.substring(1).split("&")[0].split("=")[1];
-      if (newToken !== token) {
-        dispatch({ type: 'SET_TOKEN', token: newToken });
-      }
-    }
-  }, [dispatch, token]);
+export default function App() {
+  const params = new URLSearchParams(window.location.hash.substring(1));
+  const token = params.get('access_token');
 
   return (
-    <div className={styles.app}>
-      <Routes>
-        <Route path="/" element={<SpotifyApi />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/library" element={<LibraryPage />} />
-        <Route path="/player" element={<MusicPlayer />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+    <div>
+
+        <AppProvider initialState={{ token }} reducer={reducer}>
+          <Routes>
+            <Route path="/" element={token ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard accessToken={token} />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/musicplayer" element={<MusicPlayer />} />
+            <Route path="/callback" element={<Spotify />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </AppProvider>
+
     </div>
   );
 }
 
-export default App;
+
+// import { reducerCases } from "./utils/Constants";
+// import { useStateProvider } from "./utils/stateProvider";
+// import Dashboard from "./screens/Dashboard";
+
+  
+// const [{ token }, dispatch] = useStateProvider();
+// // useEffect(() => {
+//   const hash = window.location.hash;
+//   if (hash) {
+//     const token = hash.substring(1).split("&")[0].split("=")[1];
+//     if (token) {
+//       dispatch({ type: reducerCases.SET_TOKEN, token });
+//     }
+//   }
+//   document.title = "Spotify";
+// }, [dispatch, token]);

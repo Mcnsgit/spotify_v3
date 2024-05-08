@@ -1,21 +1,12 @@
 import Searchbar from "../header/searchcontainer/SearchBar"
 import SideMenu from "./SideMenu"
+import "./Sidebar.module.css"
     
-    export const Sidebars=({
-    Left: leftbar,
-    Right:    rightbar,
-
-}) => {
-    return (
-        <div>
-            <div>
-            {leftbar 
-            ? <Searchbar />
-            : <SideMenu /> }                                                                                                                                                                                                        
-            </div>
-            <div>
-            {rightbar}
-            </div>
+    export const  Sidebars = () => {
+        return (
+                        <div className=""> 
+                        <Searchbar />
+                        <SideMenu />                   
         </div>
     )
 }

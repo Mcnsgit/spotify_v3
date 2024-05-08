@@ -1,10 +1,10 @@
-import { reducerCases } from "./Constants";
+import { reducerCases } from "./Constnts";
 
 export const initialState = {
   token: null,
   playlists: [],
   userInfo: null,
-  selectedPlaylistId: "2IK0aSXvhYwrF9NcsVclPT",
+  selectedPlaylistId: null,
   selectedPlaylist: null,
   playerState: false,
 };
@@ -53,10 +53,10 @@ const reducer = (state, action) => {
         selectedPlaylistId: action.selectedPlaylistId,
       };
     }
-    case reducerCases.SET_PLAYLIST_NAME: {
+    case reducerCases.SET_SEARCH_RESULT: {
       return {
         ...state,
-        selectedPlaylistName: action.selectedPlaylistName,
+        searchResult: action.searchResult,
       };
     }
     case reducerCases.SET_USER_PLAYLISTS: {
@@ -71,7 +71,24 @@ const reducer = (state, action) => {
         userInfo: action.userInfo,
       };
     }
-    
+    case reducerCases.SET_RECENTLY_PLAYED: {
+      return {
+        ...state,
+        recentlyPlayed: action.recentlyPlayed,
+      };
+    }
+    case reducerCases.SET_ACCESS_TOKEN: {
+      return {
+        ...state,
+        accessToken: action.accessToken,
+      };
+    }
+    case reducerCases.SET_REFRESH_TOKEN: {
+      return {
+        ...state,
+        refreshToken: action.refreshToken,
+      };
+    }
     default:
       return state;
   }
