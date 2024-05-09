@@ -51,5 +51,5 @@ export default function Spotify(code) {
     };
   }, [expiresAt, fetchAccessToken]);
 
-  return <Dashboard accessToken={accessToken} />;
+  return <Dashboard code={code} accessToken={accessToken} />;
 }

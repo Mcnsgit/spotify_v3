@@ -1,4 +1,3 @@
-// AudioComponent.js
 import React, { useContext, useEffect } from 'react';
 import { SpotifyApiContext } from '../../utils/SpotifyApiContext';
 import AudioControls from './AudioControls';

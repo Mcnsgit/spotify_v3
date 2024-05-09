@@ -1,26 +1,23 @@
-.dashboard-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
-
-.dashboard {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-}
-
-.vizualiser {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-}
-
-.player {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-}
+.dashboardContainer {
+    padding: 20px;
+    min-height: 100vh; /* Full height */
+    background-color: #282c34; /* Dark theme background */
+    color: #fff; /* Text color */
+  }
+  
+  .dashboardHeader {
+    margin-bottom: 20px;
+  }
+  
+  .dashboardContent {
+    display: grid;
+    grid-template-columns: 1fr 3fr; /* Visualizer and Music Player side by side */
+    gap: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    .dashboardContent {
+      grid-template-columns: 1fr; /* Stack on smaller screens */
+    }
+  }
+  

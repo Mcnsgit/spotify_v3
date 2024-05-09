@@ -3,13 +3,17 @@ import { Suspense, useEffect, useRef, useMemo, useContext } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import useStore from "./audioLink";
 import  {AppContext }  from "../../utils/AppContextProvider";
+import './styles.css';
 
 export default function Visualizer({ trackId, accessToken }) {
   const { currentTrack, isPlaying } = useContext(AppContext);
   const loaded = useStore((state) => state.api.loaded);
 
   useEffect(() => {
-    loaded(trackId, accessToken);
+    loaded( trackId, accessToken, {
+      threshold: 10,
+      expire: 500,
+    });
   }, [trackId, accessToken, loaded]);
 
   return (

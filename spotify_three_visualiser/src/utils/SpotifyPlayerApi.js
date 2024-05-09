@@ -95,4 +95,4 @@ const skipToPrevious = async (device_id, token) => {
   }
 };
 
-export { getTrackDetails, getTrackAudioFeatures, getTrackAudioAnalysis, playTrack, pausePlayback, setVolume, skipToNext, skipToPrevious };
+export { getTrackDetails, getTrackAudioFeatures , getTrackAudioAnalysis, playTrack, pausePlayback, setVolume, skipToNext, skipToPrevious, setAuthToken };

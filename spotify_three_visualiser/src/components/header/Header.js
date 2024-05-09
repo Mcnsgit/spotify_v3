@@ -6,11 +6,9 @@ import Searchbar from "./searchcontainer/SearchBar";
 
 const Header = () => {
     return (
-        <Container>
+        <Container className="header-container">
             <div className="header">
-                <div className="logo">
 
-                </div>
                 <div className="search">
                     <Searchbar />
                 </div>
