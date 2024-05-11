@@ -24,7 +24,7 @@ export default function App() {
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/musicplayer" element={<MusicPlayer />} />
           <Route path="/callback" element={<SpotifyApi />} />
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </AppProvider>
     </div>
