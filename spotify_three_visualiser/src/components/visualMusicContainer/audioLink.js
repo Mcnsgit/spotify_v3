@@ -1,11 +1,8 @@
-import { useContext, useEffect } from "react";
 import create from "zustand";
-import { addEffect } from "@react-three/fiber";
 import {
   getTrackAudioFeatures,
   getTrackAudioAnalysis,
 } from "../../utils/SpotifyPlayerApi";
-import { AppContext } from "../../utils/AppContextProvider";
 
 async function createAudio(trackId, accessToken, { threshold, expire } = {}) {
   const audio = new Audio();
@@ -88,45 +85,33 @@ const mockData = () => ({
   data: [],
 });
 
-const useStore = create((set, get) => {
-  const { statevalue } = useContext(AppContext);
-  const { currentTrack } = statevalue;
-
-  useEffect(() => {
-    if (currentTrack && statevalue.token) {
-      get().api.loaded(statevalue.token);
-    }
-  }, [currentTrack, statevalue.token, get]);
-
-  return {
-    loaded: false,
-    clicked: false,
-    audio: {
-      track: mockData(),
-    },
+const useStore = create((set, get) => ({
+  loaded: false,
+  clicked: false,
+  audio: {
     track: {
-      synthonly: false,
-      kicks: 0,
-      loops: 0,
+      signal: false,
+      avg: 0,
+      gain: 1,
+      data: [],
     },
-    api: {
-      async loaded(accessToken) {
-        if (currentTrack) {
-          set({
-            loaded: true,
-            audio: {
-              track: await createAudio(currentTrack.uri, accessToken, {
-                threshold: 10,
-                expire: 500,
-              }),
-            },
-          });
-        }
-      },
-      start() {
-        const audio = get().audio;
-        const track = get().track;
-        set({ clicked: true });
+  },
+  track: {
+    synthonly: false,
+    kicks: 0,
+    loops: 0,
+  },
+  api: {
+    async loadTrack(accessToken, trackId) {
+      const audioData = await createAudio(trackId, accessToken, { threshold: 10, expire: 500 });
+      set({ loaded: true, audio: { track: audioData } });
+    },
+    start() {
+      const audio = get().audio;
+      const track = get().track;
+      set({ clicked: true });
+      if (!audio.track.signal) return;
+      const addEffect = audio.track.data.connect(audio.context.destination);
         addEffect(() => {
           audio.track.update();
           if (audio.track.signal) track.kicks++;
@@ -140,7 +125,12 @@ const useStore = create((set, get) => {
         });
       },
     },
-  };
-});
+    stop() {
+      set({ clicked: false });
+      const audio = get().audio;
+      audio.track.data.disconnect();
+    },
+  }
+));
 
 export default useStore;

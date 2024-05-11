@@ -3,11 +3,13 @@ import ErrorBoundary from '../ErrorBoundary';
 import TrackSearchResult from '../header/searchcontainer/TrackSearchResults';
 import '../../App.module.css';
 import './styles.css';
+import { Link } from "react-router-dom";
+
 // import { actionTypes } from '../../utils/AppState';
 import { AppContext } from '../../utils/AppContextProvider';
 import SpotifyPlayer from 'react-spotify-web-playback';
 
-const AudioComponent = lazy(() => import('../audioControls/AudioComponent'));
+const AudioComponent = lazy(() => import('../audiocomponent/AudioComponent'));
 const Visualizer = lazy(() => import('./Vizualiser'));
 
 
@@ -36,6 +38,11 @@ const MusicPlayer = ({ trackUri }) => {
   return (
     <ErrorBoundary>
       <Suspense fallback={<div className="loader">Loading, please wait...</div>}>
+        <div className="player"></div>
+      <Link to="/dashboard">Back to Dashboard</Link>
+      <div className="musicPlayerContainer">
+
+          
         <TrackSearchResult track={playingTrack} chooseTrack={chooseTrack} />
         <div className="player">
         <SpotifyPlayer
@@ -46,7 +53,7 @@ const MusicPlayer = ({ trackUri }) => {
           }}
           play={play}
           uris={trackUri ? [trackUri] : []}
-        />
+          />
         </div>
         <div className="Audiocontrolscontainer">
         <AudioComponent />
@@ -57,7 +64,9 @@ const MusicPlayer = ({ trackUri }) => {
           <Visualizer trackId={currentTrack.uri} accessToken={accessToken} />
         )}
         </div>
+        </div>
       </Suspense>
+
     </ErrorBoundary>
   );
 };

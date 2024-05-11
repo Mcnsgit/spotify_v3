@@ -24,8 +24,6 @@ export const initialState = {
     playerVolume: null,
     search: null,
 
-    
-
 };
 
 export const actionTypes = {
@@ -52,6 +50,10 @@ export const actionTypes = {
     SET_SEARCH: "SET_SEARCH",
     SET_USER_FOLLOWED_ARTISTS: "SET_USER_FOLLOWED_ARTISTS",
     SET_SEARCH_RESULTS: "SET_SEARCH_RESULTS",
+    SET_ERROR: "SET_ERROR",
+    UPDATE_VOLUME: "UPDATE_VOLUME",
+    FETCH_USER_SUCCESS: "FETCH_USER_SUCCESS",
+    FETCH_USER_ERROR: "FETCH_USER_ERROR",
 };
 
 export const reducer = (state, action) => {
@@ -102,6 +104,8 @@ export const reducer = (state, action) => {
             return { ...state, playerVolume: action.playerVolume };
         case actionTypes.SET_SEARCH:
             return { ...state, search: action.search };
+        case actionTypes.UPDATE_VOLUME:
+            return { ...state, volume: action.volume };
         default:
             return state;
     }

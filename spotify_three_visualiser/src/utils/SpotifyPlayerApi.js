@@ -95,4 +95,25 @@ const skipToPrevious = async (device_id, token) => {
   }
 };
 
-export { getTrackDetails, getTrackAudioFeatures , getTrackAudioAnalysis, playTrack, pausePlayback, setVolume, skipToNext, skipToPrevious, setAuthToken };
+const getPlaybackState = async (device_id, token) => {
+  setAuthToken(token);
+  try {
+    const response = await spotifyApi.get(`/me/player?device_id=${device_id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching playback state:', error);
+    return null;
+  }
+};
+
+const searchTrack = async (query, token) => {
+  setAuthToken(token);
+  try {
+    const response = await spotifyApi.get('/search?q=&remaster%2520track%3ADoxy%2520artist%3AMiles%2520Davis&type=album%2Cplaylist%2Ctrack%2Cartist&market=GB&limit=50');
+    return response.data;
+  } catch (error) {
+    console.error('Error searching track:', error);
+    return null;
+  }
+}
+export { getTrackDetails, getTrackAudioFeatures , getTrackAudioAnalysis, playTrack, pausePlayback, setVolume, skipToNext, skipToPrevious, setAuthToken, getPlaybackState, searchTrack };

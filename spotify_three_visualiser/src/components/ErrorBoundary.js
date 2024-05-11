@@ -10,10 +10,15 @@ class ErrorBoundary extends React.Component {
     return { hasError: true };
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error, errorInfo, errorStack, errorInfoStack, errorComponentStack) {
+
     // You can log the error or send it to an error tracking service
     console.error('Error:', error);
     console.error('Error Info:', errorInfo);
+    console.error('Error Stack:', errorStack);
+    console.error('Error Info Stack:', errorInfoStack);
+    console.error('Error Component Stack:', errorComponentStack);
+    
   }
 
   render() {

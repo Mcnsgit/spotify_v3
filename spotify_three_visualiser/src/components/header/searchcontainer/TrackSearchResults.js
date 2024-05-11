@@ -1,28 +1,26 @@
-import React from "react";
-import "./TrackSearch.module.css";
-
+import React from 'react'
 export default function TrackSearchResult({ track, chooseTrack }) {
-  function handleChooseTrack() {
-    chooseTrack(track);
+  function handlePlay() {
+    if (track) {
+      chooseTrack(track);
+    }
   }
 
-  if (!track) return null;
-   // Handle case where track data might be undefined
-
+  if (!track) {
+    // Optionally return a placeholder or nothing if there's no track data
+    return <div className="d-flex m-2 align-items-center">Loading...</div>;
+  }
   return (
     <div
-      className='TrackResults'
+      className="d-flex m-2 align-items-center"
       style={{ cursor: "pointer" }}
-      onClick={handleChooseTrack}
+      onClick={handlePlay}
     >
-      <img src={track.albumUrl} alt={`Album cover for ${track.title}`} style={{ height: "64px", width: "64px" }} />
+    <img src={track.album_url || 'default_album.png'} alt={`${track.title} album cover`} style={{ height: "64px", width: "64px" }} />
       <div className="ml-3">
-        <div>{track.title}</div>
-        <div className="text-muted">{track.artist}</div>
-        <div className='textMuted'>{track.artist}</div>
+        <div>{track.title || 'Unknown Title'}</div>
+        <div className="text-muted">{track.artist || 'Unknown Artist'}</div>
       </div>
-      </div>
- 
- 
+    </div>
   );
 }

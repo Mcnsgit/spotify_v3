@@ -1,36 +1,75 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { Container } from "react-bootstrap";
-import {MenuButtons} from "./MenuButtons";
-import {Sidebars} from "./sidebars";
-import "./Sidebar.module.css";
+import styled from "styled-components";
+import { IoLibrary } from "react-icons/io5";
+import { MdHomeFilled, MdSearch } from "react-icons/md";
+import Playlists from "../playlists/Playlists";
 
-
-const  SideMenu= ()=>{
-  const buttons = [
-    { to: "/", label: "Home", icon: "home" },
-    { to: "/searchbar", label: "Search", icon: "search" },
-    { to: "/library", label: "Your Library", icon: "library" },
-    { to: "/favorites", label: "Favourites", icon: "favorites" },
-    { to: "/recently-played", label: "Recently Played", icon: "recently-played" },
-    { to: "/profile", label: "User Profile", icon: "user-profile" },
-  ];
-
+export default function Sidebar() {
   return (
     <Container>
-      <div className='sidebar'>
-        <strong className='sidebarTitle'>Menu</strong>
-        <nav>
-          <Sidebars />
-          {buttons.map(btn => (
-            <NavLink key={btn.label} to={btn.to} activeClassName='active' className='sidebarButton'>
-              <MenuButtons iconClass={btn.icon} label={btn.label} />
-            </NavLink>
-          ))}
-        </nav>
+      <div className="top_links">
+        <div className="logo">
+          <img
+            src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_White.png"
+            alt="spotify logo"
+          />
+        </div>
+        <ul>
+          <li>
+            <MdHomeFilled />
+            <span>Home</span>
+          </li>
+          <li>
+            <MdSearch />
+            <span>Search</span>
+          </li>
+          <li>
+            <IoLibrary />
+            <span>Your Library</span>
+          </li>
+        </ul>
       </div>
+      <Playlists />
     </Container>
   );
 }
 
-export default SideMenu;
+const Container = styled.div`
+  background-color: #131313;
+  border-radius: 20px;
+  color: #b3b3b3;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  .top_links {
+    display: flex;
+    flex-direction: column;
+    .logo {
+      text-align: center;
+      margin: 1rem 0;
+      img {
+        max-inline-size: 70%;
+        block-size: auto;
+      }
+    }
+    ul {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+      li {
+        display: flex;
+        gap: 1rem;
+        cursor: pointer;
+        transition: 0.3s ease-in-out;
+        &:hover {
+          color: white;
+        }
+        span {
+        }
+      }
+    }
+  }
+`;

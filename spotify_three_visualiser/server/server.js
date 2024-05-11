@@ -3,6 +3,7 @@ const axios = require('axios');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
+const lyricsFinder = require('lyrics-finder');
 
 const port = 8080;
 dotenv.config();
@@ -128,6 +129,11 @@ app.get('/auth/search', async (req, res) => {
     }
   }
 });
+app.get("/lyrics", async (req, res) => {
+  const lyrics =
+    (await lyricsFinder(req.query.artist, req.query.track)) || "No Lyrics Found"
+  res.json({ lyrics })
+})
 
 
 app.listen(port, () => {
