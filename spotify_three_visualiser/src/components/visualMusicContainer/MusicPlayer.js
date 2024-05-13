@@ -1,7 +1,7 @@
 import React, { useState, lazy, Suspense, useContext, useEffect } from 'react';
 import ErrorBoundary from '../ErrorBoundary';
-import TrackSearchResult from '../header/searchcontainer/TrackSearchResults';
-import '../../App.module.css';
+import TrackSearchResult from '../sections/searchcontainer/TrackSearchResults';
+import '../../App.scss';
 import './styles.css';
 import { Link } from "react-router-dom";
 

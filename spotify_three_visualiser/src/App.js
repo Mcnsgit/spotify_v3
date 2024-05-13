@@ -4,20 +4,39 @@ import Login from "./screens/Login";
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './screens/Dashboard';
 import Profile from './screens/Profile';
-import { AppProvider } from "./utils/AppContextProvider.js";
 import MusicPlayer from "./components/visualMusicContainer/MusicPlayer.js";
-import Playlists from "./components/playlists/Playlists.js";
+import Playlists from "./components/sections/playlists/modal.js";
 import SpotifyApi from "./screens/SpotifyApi";
-
+import { Provider } from 'react-redux';
+import { store } from './index.js';
+import { AppProvider } from "./utils/AppContextProvider.js";
+// import { setToken } from "./utils/actions/sessionActions.js";
+// import { fetchUser} from "./utils/actions/userActions.js";
+// import WebPlayback from "./components/audiocomponent/webPlayback.js";
 export default function App() {
   const params = new URLSearchParams(window.location.hash.substring(1));
   const token = params.get('access_token');
 
+//   useEffect(() => {
+//     // Redirect to the /login path when the application first loads
+//     navigate('/login');
+//   }, [navigate]);
+
+
+//   const handleLogin = (token) => {
+//     if (token) {
+//       navigate('/dashboard');
+//     } else {
+//       navigate('/login');
+//   }
+// };
+
   return (
+      <Provider store={store}>
+        <AppProvider>
     <div>
-      <AppProvider token={token}>
         <Routes>
-          <Route path="/" element={token ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
+        <Route path="/" element={token ? <Navigate to="/dashboard" /> :<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
@@ -26,8 +45,9 @@ export default function App() {
           <Route path="/callback" element={<SpotifyApi />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-      </AppProvider>
     </div>
+    </AppProvider>
+      </Provider>
   );
 }
 

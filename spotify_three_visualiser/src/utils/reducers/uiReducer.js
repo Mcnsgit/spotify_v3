@@ -1,15 +1,21 @@
-const defaultState = {
-  title: "Songs"
+const initialState = {
+  view: 'browse',
+  modal: false
 };
 
-export const uiReducer = (state = defaultState, action) => {
+export const uiReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "UPDATE_HEADER_TITLE":
+    case 'SET_NEW_VIEW':
       return {
         ...state,
-        title: action.title
+        view: action.view
       };
-
+    case 'SET_MODAL':
+      return {
+        ...state,
+        modal: action.modal,
+        mode: action.mode
+      };
     default:
       return state;
   }

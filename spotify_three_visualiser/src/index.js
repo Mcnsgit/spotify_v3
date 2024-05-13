@@ -1,36 +1,30 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { createStore, applyMiddleware } from "redux";
-import {thunk} from "redux-thunk";
-import { Provider } from "react-redux";
-
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
 import App from './App';
-
-import reducers from './utils/reducers/'; 
+import rootReducer from './utils/reducers/rootReducer';
 import { BrowserRouter } from 'react-router-dom';
-// import { AppProvider } from './utils/AppContextProvider';
-// import { initialState, reducer } from './utils/AppState';
 import ErrorBoundary from './components/ErrorBoundary';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+  devTools: process.env.NODE_ENV !== 'production',
+});
 
-const store = createStore(
-  reducers,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  applyMiddleware(thunk)
-);
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <>
+  <StrictMode>
     <ErrorBoundary>
       <BrowserRouter>
         <Provider store={store}>
-
-
-            <App />
-
+          <App />
         </Provider>
       </BrowserRouter>
     </ErrorBoundary>
+  </StrictMode>
   </>
 );

@@ -4,13 +4,14 @@ import Dashboard from "./Dashboard";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchUser } from '../utils/actions/userActions';
-import { setToken } from '../utils/actions/tokenActions';
+import { setToken } from '../utils/actions/sessionActions';
 import {
   playSong,
-  stopSong,
+  playTracks,
   pauseSong,
-  resumeSong,
-} from '../utils/actions/songActions';
+  nextSong,
+  previousSong,
+} from '../utils/actions/playerActions';
 
 const Spotify = ({ code, setToken: dispatchSetToken, fetchUser: dispatchFetchUser, playSong: dispatchPlaySong, stopSong: dispatchStopSong, pauseSong: dispatchPauseSong, resumeSong: dispatchResumeSong }) => {
   const [accessToken, setAccessToken] = useState();
@@ -72,10 +73,11 @@ const mapDispatchToProps = (dispatch) => {
     {
       fetchUser,
       setToken,
+      nextSong,
       playSong,
-      stopSong,
+      playTracks,
       pauseSong,
-      resumeSong,
+      previousSong,
     },
     dispatch
   );

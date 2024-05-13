@@ -1,47 +1,36 @@
 export const browseReducer = (state = {}, action) => {
-    switch (action.type) {
-    case "FETCH_CATEGORIES_SUCCESS":
+  switch (action.type) {
+    case 'FETCH_CATEGORIES_SUCCESS':
       return {
         ...state,
-        view: action.categories.items,
-        fetchCategoriesError: false
+        categories: action.categories,
+        fetchCategoriesError: false,
+        fetchCategoriesPending: false
       };
-  
-    case "FETCH_CATEGORIES_ERROR":
+    case 'FETCH_CATEGORIES_PENDING':
+      return {
+        ...state,
+        fetchCategoriesPending: true
+      };
+    case 'FETCH_CATEGORIES_ERROR':
       return {
         ...state,
         fetchCategoriesError: true
       };
-  
-    case "FETCH_NEW_RELEASES_SUCCESS":
+    case 'FETCH_MORE_CATEGORIES_SUCCESS':
+      let items = [...state.categories.items, ...action.categories];
       return {
         ...state,
-        view: action.newReleases.items,
-        fetchNewReleasesError: false
+        categories: {
+          ...state.categories,
+          next: action.next,
+          items: items
+        }
       };
-  
-    case "FETCH_NEW_RELEASES_ERROR":
-      return {
-        ...state,
-        fetchNewReleasesError: true
-      };
-  
-    case "FETCH_FEATURED_SUCCESS":
-      return {
-        ...state,
-        view: action.featured.items,
-        fetchFeaturedError: false
-      };
-  
-    case "FETCH_FEATURED_ERROR":
-      return {
-        ...state,
-        fetchFeaturedError: true
-      };
-  
+
     default:
       return state;
-    }
-  };
-  
-  export default browseReducer;
+  }
+};
+
+export default browseReducer;

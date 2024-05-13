@@ -1,38 +1,41 @@
-export const fetchAlbumsPending = () => {
-    return {
-      type: 'FETCH_ALBUMS_PENDING'
-    };
+import axios from '../../axios';
+
+const fetchAlbumSuccess = album => {
+  return {
+    type: 'FETCH_ALBUM_SUCCESS',
+    album
   };
-  
-  export const fetchAlbumsSuccess = (albums) => {
-    return {
-      type: 'FETCH_ALBUMS_SUCCESS',
-      albums
-    };
+};
+
+const fetchAlbumError = () => {
+  return {
+    type: 'FETCH_ALBUM_ERROR'
   };
-  
-  export const fetchAlbumsError = () => {
-    return {
-      type: 'FETCH_ALBUMS_ERROR'
-    };
+};
+
+const fetchAlbumPending = () => {
+  return {
+    type: 'FETCH_ALBUM_PENDING'
   };
-  
-  export const fetchAlbums = (accessToken) => {
-    return dispatch => {
-      const request = new Request(`https://api.spotify.com/v1/me/albums`, {
-        headers: new Headers({
-          'Authorization': 'Bearer ' + accessToken
-        })
-      });
-  
-      dispatch(fetchAlbumsPending());
-  
-      fetch(request).then(res => {
-        return res.json();
-      }).then(res => {
-        dispatch(fetchAlbumsSuccess(res.items));
-      }).catch(err => {
-        dispatch(fetchAlbumsError(err));
-      });
-    };
+};
+
+export const fetchAlbum = id => {
+  return async dispatch => {
+    dispatch(fetchAlbumPending());
+    function onSuccess(album) {
+      dispatch(fetchAlbumSuccess(album));
+      return album;
+    }
+    function onError(error) {
+      dispatch(fetchAlbumError());
+      return error;
+    }
+    try {
+      const album = await axios.get(`/albums/${id}`);
+      const tracks = await axios.get(`/albums/${id}/tracks?limit=50`);
+      return onSuccess({ ...album.data, tracks: tracks.data.items });
+    } catch (error) {
+      return onError(error);
+    }
   };
+};

@@ -5,8 +5,8 @@ import MusicPlayer from "../components/visualMusicContainer/MusicPlayer";
 import axios from "axios";
 import "./dashboard.module.css";
 
-import Searchbar from "../components/header/searchcontainer/SearchBar";
-import TrackSearchResult from "../components/header/searchcontainer/TrackSearchResults";
+import Search from "../components/sections/searchcontainer/search";
+import TrackSearchResult from "../components/sections/searchcontainer/TrackSearchResults";
 import { AppContext } from "../utils/AppContextProvider";
 import SideMenu from "../components/sidebar/SideMenu";
 
@@ -46,7 +46,7 @@ const Dashboard = ({ accessToken }) => {
         <h1>Dashboard</h1>
         </div>
       <div>
-        <Searchbar accessToken={accessToken} />
+        <Search />
         <TrackSearchResult
           accessToken={accessToken}
           chooseTrack={handleChooseTrack}
