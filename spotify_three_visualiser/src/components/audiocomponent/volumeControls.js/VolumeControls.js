@@ -1,46 +1,91 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import Devices from '../../devices/device';
+import VolumeSlider from './volumeSlider';
+import spotifyApi from "../../../axios";
 import "./VolumeControls.css";
 
 class VolumeControls extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      volume: props.volume
-    };
-  }
-
-  updateVolume = e => {
-    this.setState({
-      volume: e.target.value
-    });
-
-    this.props.updateVolume(Math.ceil(e.target.value / 10) * 10);
+  state = {
+    volume: 1,
+    previous: 1,
+    clicked: false
   };
 
-  render() {
-    return (
-      <div className="volume-container">
-        <i className="fa fa-volume-up" aria-hidden="true" />
-        <input
-          className="volume"
-          type="range"
-          min={0}
-          max={100}
+  changeVolume = value => {
+    spotifyApi.put(`/me/player/volume?volume_percent=${Math.round(value * 100)}`);
+  };
+
+  onOff = () => {
+    this.setState(prevState => {
+      return { volume: 0, previous: prevState.volume, clicked: true };
+    });
+    this.changeVolume(0);
+  };
+    onOn = () => {
+      this.setState(prevState => {
+        return { volume: prevState.previous, clicked: false };
+      });
+      this.changeVolume(this.state.previous);
+    };
+  
+    onClick = () => {
+      if (!this.state.clicked) {
+        this.onOff();
+      } else {
+        if (this.state.volume === 0) {
+          this.onOn();
+        } else {
+          this.setState({ clicked: false });
+        }
+      }
+    };
+
+    render = () => (
+      <div className="volume-control-container">
+        <Devices />
+        <VolumeSlider
           value={this.state.volume}
-          onChange={this.updateVolume}
+          onClick={this.onClick}
+          onChange={value => {
+            this.setState({ volume: value });
+          }}
+          onChangeEnd={value => {
+            this.setState({ volume: value });
+            this.changeVolume(value);
+          }}
         />
       </div>
     );
   }
-}
+  
+  export default VolumeControls;
+  
 
-VolumeControls.propTypes = {
-  volume: PropTypes.number,
-  updateVolume: PropTypes.func
-};
 
-export default VolumeControls;
+
+//   render() {
+//     return (
+//       <div className="volume-container">
+//         <i className="fa fa-volume-up" aria-hidden="true" />
+//         <input
+//           className="volume"
+//           type="range"
+//           min={0}
+//           max={100}
+//           value={this.state.volume}
+//           onChange={this.updateVolume}
+//         />
+//       </div>
+//     );
+//   }
+// }
+
+// VolumeControls.propTypes = {
+//   volume: PropTypes.number,
+//   updateVolume: PropTypes.func
+// };
+
+// export default VolumeControls;
 
 
 

@@ -1,11 +1,11 @@
 import axios from '../../axios';
 
-export const setToken = token => {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-  localStorage.setItem('token', token);
+export const accessToken = accessToken => {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+  localStorage.setItem('accessToken', accessToken);
   return {
     type: 'SET_TOKEN',
-    token
+    accessToken
   };
 };
 

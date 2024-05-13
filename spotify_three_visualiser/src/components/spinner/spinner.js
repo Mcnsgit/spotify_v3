@@ -20,7 +20,6 @@ const Spinner = props => (
     </div>
   </div>
 );
+const SpinnerComponent = ({ section }) => <Spinner section={section} />;
 
-export default ({ loading, children, section = false }) => {
-  return loading ? <Spinner section={section} /> : children;
-};
+export default SpinnerComponent;

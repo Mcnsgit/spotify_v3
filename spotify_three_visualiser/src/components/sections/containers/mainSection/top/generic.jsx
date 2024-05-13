@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 
-import axios from '../../../axios';
-import Spinner from '../../spinner/spinner';
-import withUiAction from '../../../hoc/uiHoc';
+import axios from '../../../../../axios';
+import Spinner from '../../../../spinner/spinner';
+import withUiAction from '../../../../../hoc/uiHoc';
 import InfiniteScroll from 'react-infinite-scroller';
-import Album from '../../items/album';
-import Artist from '../../items/artist';
-
-import './generic.css';
+import Album from '../../../../items/album';
+import Artist from '../../../../items/artist';
+import './generic.scss';
 
 class Generic extends Component {
   state = {

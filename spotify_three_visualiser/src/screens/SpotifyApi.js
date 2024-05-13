@@ -4,7 +4,7 @@ import Dashboard from "./Dashboard";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchUser } from '../utils/actions/userActions';
-import { setToken } from '../utils/actions/sessionActions';
+import { accessToken } from '../utils/actions/sessionActions';
 import {
   playSong,
   playTracks,
@@ -72,7 +72,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       fetchUser,
-      setToken,
+      accessToken,
       nextSong,
       playSong,
       playTracks,

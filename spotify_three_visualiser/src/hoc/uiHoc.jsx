@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import { setView, setModal } from '../utils/actions/uiActions';
 import { fetchPlaylist } from '../utils/actions/playlistActions';
 import { fetchArtist } from '../utils/actions/artistActions';
 import { fetchAlbum } from '../utils/actions/albumActions';
 
-export default function(ComposedComponent) {
+const withUi = (ComposedComponent) => {
   class UiHoc extends Component {
     showModal = () => {
       this.props.setModal(true, 'playlist');
     };
+
     onPlaylistClick = id => {
       this.props.fetchPlaylist(id);
       this.props.setView('playlist');
@@ -31,7 +31,8 @@ export default function(ComposedComponent) {
       this.props.setView('search');
     };
 
-    render = () => (
+    renderer = () => (
+
       <ComposedComponent
         {...this.props}
         showModal={this.showModal}
@@ -41,7 +42,14 @@ export default function(ComposedComponent) {
         onSearch={this.onSearch}
       />
     );
+
+    render() {
+      return this.renderer();
+    }
   }
+
+        
+      
 
   const mapDispatchToProps = dispatch => {
     return bindActionCreators(
@@ -56,8 +64,7 @@ export default function(ComposedComponent) {
     );
   };
 
-  return connect(
-    null,
-    mapDispatchToProps
-  )(UiHoc);
-}
+  return connect(null, mapDispatchToProps)(UiHoc);
+};
+
+export default withUi;

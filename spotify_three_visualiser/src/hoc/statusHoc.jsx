@@ -14,7 +14,7 @@ import {
   containsSong
 } from '../utils/actions/libraryActions';
 
-export default function(ComposedComponent) {
+export function statusHoc(ComposedComponent) {
   class StatusHoc extends Component {
     render = () => <ComposedComponent {...this.props} />;
   }

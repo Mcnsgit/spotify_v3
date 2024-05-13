@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import axios from '../../../../../axios';
 import Spinner from '../../../../spinner/spinner';
 
-import withStatus from '../../../../../hoc/statusHoc';
+import {statusHoc as withStatus} from '../../../../../hoc/statusHoc';
 import PlaylistTable from '../../../playlists/playlistTable/playlistTable';
 
 class SongsSearcher extends Component {

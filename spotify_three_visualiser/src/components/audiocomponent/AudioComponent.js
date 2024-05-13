@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import SongControls from "./audioControls/AudioControls";
-import VolumeControls from "./volumeControls.js/Volume";
+import VolumeControls from "./volumeControls.js/VolumeControls";
 import "./AudioComponent.css";
 
 const AudioComponent = ({ stopSong, pauseSong, resumeSong, audioControl }) => (

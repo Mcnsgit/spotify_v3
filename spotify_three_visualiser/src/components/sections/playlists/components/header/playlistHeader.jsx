@@ -1,10 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 
-import './playlistHeader.css';
-import defaultCover from '../../../../../containers/mainSection/images/playlist.png';
-
-import FollowBtn from '../../../../buttons/followButton/followPlaylist';
+import './playlistHeader.scss';
+import defaultCover from '../../../../../images/playlist.png';
+import FollowButton from '../../../buttons/followButton';
 import withUiActions from '../../../../../hoc/uiHoc';
 
 const playlistHeader = ({
@@ -114,7 +113,7 @@ const playlistHeader = ({
           </div>
           <div>
             {!album &&
-              !playlist.mine && <FollowBtn following={playlist.follows} />}
+              !playlist.mine && <FollowButton following={playlist.follows} />}
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import React from 'react';
 
 import artist from '../../../../../images/artist.png';
 import playlist from '../../../../../images/playlist.png';
-import withStatus from '../../../../../hoc/statusHoc';
+import {statusHoc} from  '../../../../../hoc/statusHoc';
 
 const item = ({
   item,
@@ -69,4 +69,4 @@ const item = ({
   );
 };
 
-export default withStatus(item);
+export default statusHoc(item);

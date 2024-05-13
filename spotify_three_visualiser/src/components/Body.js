@@ -6,7 +6,7 @@ import { reducer } from "../utils/AppState";
 import { AiFillClockCircle } from "react-icons/ai";
 
 
-export default function Body({ headerBackground }) {
+export default function Body() {
   const [{ token, selectedPlaylist, selectedPlaylistId }, dispatch] = AppProvider.useContext();
 
   useEffect(() => {
@@ -87,8 +87,8 @@ export default function Body({ headerBackground }) {
   };
 
   return (
-    <Container headerBackground={headerBackground}>
-      {selectedPlaylist && (
+    <Container headerBackground>
+          {selectedPlaylist && (
         <>
           <div className="playlist">
             <div className="image">

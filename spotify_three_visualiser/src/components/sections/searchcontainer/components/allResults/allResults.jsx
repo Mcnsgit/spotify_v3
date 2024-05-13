@@ -1,6 +1,5 @@
 import React from 'react';
-
-import Generic from '../../../../../containerstop/generic';
+import Generic from '../../../containers/mainSection/top/generic';
 import SongSearch from './songsSearch';
 const results = props => {
   let type;

@@ -1,0 +1,9 @@
+import React from 'react';
+import MusicPlayer from '../../../visualMusicContainer/MusicPlayer.js';
+
+const footer = props => (
+    <div className="footer">
+      <MusicPlayer />
+      <VolumeControls />
+    </div>
+  );
