@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { serverApi } from '../../../axios';
+import serverApi from '../../../axios';
 import VolumeSider from './volumeSider';
 import Devices from '../../devices/devices';
 

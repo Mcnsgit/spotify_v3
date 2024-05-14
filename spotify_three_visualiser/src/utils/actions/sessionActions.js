@@ -1,4 +1,4 @@
-import  { serverApi } from '../../axios';
+import   serverApi from '../../axios';
 
 export const accessToken = accessToken => {
   serverApi.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;

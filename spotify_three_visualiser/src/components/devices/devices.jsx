@@ -1,38 +1,53 @@
 import React, { Component } from 'react';
-
 import './devices.css';
-
 import Device from './device';
 import media from './media.png';
-import {serverApi} from '../../axios';
+import serverApi from '../../axios';
 
 class Devices extends Component {
   state = { devices: [], show: false };
 
+  getDevices = async (accessToken) => {
+    try {
+      const response = await serverApi.get('/me/player/devices', {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+      this.setState({ devices: response.data.devices });
+    } catch (error) {
+      console.error('Error fetching devices:', error);
+      throw error;
+    }
+  };
+
   componentDidMount() {
-    this.getDevices();
+    const { accessToken } = this.props;
+    console.log('accessToken:', accessToken); // Add this line to check the accessToken value
+    this.getDevices(accessToken);
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const { accessToken } = this.props;
     if (!prevState.show && this.state.show) {
-      this.getDevices();
+      console.log('accessToken:', accessToken); // Add this line to check the accessToken value
+      this.getDevices(accessToken);
     }
   }
 
   transferDevice = id => {
     serverApi
       .put('/me/player', { device_ids: [id], play: true })
-      .then(this.hideDevices());
+      .then(this.hideDevices)
+      .catch(error => {
+        console.error('Error transferring device:', error);
+      });
   };
 
-  getDevices = () => {
-    serverApi.get('/me/player/devices').then(response => {
-      this.setState({ devices: response.data.devices });
-    });
-  };
+  
 
   toddleState = () => {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return { show: !prevState.show };
     });
   };
@@ -56,7 +71,7 @@ class Devices extends Component {
       />
       <div className={`devices ${!this.state.show ? 'hide' : ''}`}>
         <div className="devices-header">
-          <h4>Conect to a device</h4>
+          <h4>Connect to a device</h4>
           <i className="fa fa-question-circle-o" aria-hidden="true" />
         </div>
         <img src={media} alt="devices" />

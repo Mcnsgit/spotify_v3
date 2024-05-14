@@ -26,6 +26,8 @@ class search extends Component {
     <div className="track-search-container" style={container}>
       <form>
         <input
+          className="track-search-input"
+          id='TrackSearchInput'
           type="text"
           placeholder="Search..."
           style={input}

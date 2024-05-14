@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {serverApi} from '../../axios';
+import serverApi
+ from '../../axios';
 import { setModal } from '../../utils/actions/uiActions';
 import {
   fetchPlaylistsMenu,
@@ -13,19 +14,19 @@ import './modal.css';
 import song from '../../containers/mainSection/images/song.png';
 
 class Modal extends Component {
-  state = {};
-
-  componentWillMount() {
-    this.initialize();
+  constructor(props) {
+    super(props);
+    this.state = {
+      header: '',
+      title: '',
+      description: '',
+      image: song,
+      btn: '',
+      error: false
+    };
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps !== this.props && this.props.show) {
-      this.initialize();
-    }
-  }
-
-  initialize = () => {
+  componentDidMount() {
     if (this.props.edit) {
       this.setState({
         header: 'Edit Playlist Details',
@@ -47,6 +48,16 @@ class Modal extends Component {
         error: false
       });
     }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props && this.props.show) {
+      this.initialize();
+    }
+  }
+
+  initialize = () => {
+    // Replaced with componentDidMount
   };
 
   handleChange = (input, event) => {
@@ -65,7 +76,6 @@ class Modal extends Component {
   };
 
   onCancel = () => {
-    this.initialize();
     this.props.setModal(false);
   };
 
@@ -124,6 +134,9 @@ class Modal extends Component {
               <div className="title-input">
                 <span>Name</span>
                 <input
+                  type="text"
+                  name="title"
+                  id="title"
                   value={this.state.title}
                   onChange={event => this.handleChange('title', event)}
                   placeholder="Playlist name"
@@ -147,6 +160,7 @@ class Modal extends Component {
                         this.handleChange('description', event)
                       }
                       placeholder="Give your playlist a catchy description."
+                      id='description'
                       maxLength="300"
                     />
                   </div>
@@ -207,3 +221,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Modal);
+

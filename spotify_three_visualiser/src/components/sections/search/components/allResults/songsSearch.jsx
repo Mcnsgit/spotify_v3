@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-import {serverApi} from '../../../../../axios';
+import serverApi
+ from '../../../../../axios';
 import Spinner from '../../../../spinner/spinner';
 
 import {statusHoc as withStatus} from '../../../../../hoc/statusHoc';

@@ -7,7 +7,7 @@ import './dashboard.module.css';
 import { connect } from 'react-redux';
 
 
-// import MusicPlayer from '../components/visualMusicContainer/MusicPlayer';  // Controls for music playback
+import SongPlayer from '../components/visualMusicContainer/MusicPlayer';  // Controls for music playback
 
 import WebPlaybackReact from './webPlayback';
 
@@ -49,9 +49,13 @@ class Dashboard extends Component {
             <MainSection />
 
       </div>
-      <footer>
+      <div className="d-flex flex-grow-1">
+        <SongPlayer />
 
-      </footer>
+      </div>
+      
+
+      
     </Container>
   );
 };

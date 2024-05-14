@@ -11,11 +11,11 @@ import ErrorBoundary from '../ErrorBoundary';
 // import { lazy, Suspense, useState, useEffect } from 'react';
 import withPlayer from '../../hoc/playerHoc';
 // import AudioComponent from '../audiocomponent/AudioComponent';
-import DetailSection from '../audiocomponent/detailsSection'; 
-import SongControls from '../audiocomponent/audioControls/AudioControls'; 
-import VolumeControls from '../audiocomponent/volumeControls.js/VolumeControls';
+import DetailSection from '../songsPlayer/components/detailsSection'; 
+import SongControls from '../songsPlayer/components/songsControl'; 
+import VolumeControl from '../songsPlayer/components/volumeControl';
 import './MusicPlayer.scss'
-import SongSlider from '../audiocomponent/songSlider/SongSlider'
+import ProgressBar from '../songsPlayer/components/songSider';
 
 
 
@@ -49,7 +49,7 @@ class MusicPlayer extends Component {
         <SongControls 
           {...this.props}
           />
-          <SongSlider
+          <ProgressBar
           isEnabled
           value={position / duration}
           position={position}
@@ -58,7 +58,7 @@ class MusicPlayer extends Component {
             this.props.seekSong(Math.round(value * duration * 1000))
           }
           />
-          <VolumeControls />          
+          <VolumeControl />          
           </div>
         </ErrorBoundary>
       );

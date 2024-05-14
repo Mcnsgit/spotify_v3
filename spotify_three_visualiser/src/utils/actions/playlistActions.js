@@ -1,4 +1,4 @@
-import {serverApi} from "../../axios";
+import serverApi from "../../axios";
 
 const fetchPlaylistMenuPending = () => {
   return {

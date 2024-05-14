@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import {serverApi} from '../../../axios';
+import serverApi from '../../../axios';
 import Spinner from '../../spinner/spinner';
 import withUiAction from '../../../hoc/uiHoc';
 import InfiniteScroll from 'react-infinite-scroller';

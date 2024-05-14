@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 // import UserDetails from '../userDetails/userDetails';
 import Search from '../trackSearch/trackSearch';
 
-import './header.scss';
+import './Header.scss';
 
 class Header extends Component {
   render = () => (

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {serverApi} from '../../../axios';
+import serverApi from '../../../axios';
 
 import {
   fetchSongs,

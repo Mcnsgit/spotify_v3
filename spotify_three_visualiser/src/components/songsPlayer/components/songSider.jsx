@@ -1,6 +1,6 @@
 import React from 'react';
 import { Direction, Slider, FormattedTime } from 'react-player-controls';
-
+import '../songsPlayer.scss';
 const SliderBar = ({ value, style, className }) => (
   <div
     className={className}

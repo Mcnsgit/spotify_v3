@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Header from '../../components/header/header';
-import Footer from '../../components/footer/footer';
+
 // import Browse from '../../components/sections/browse/browser';
 import Songs from '../../components/sections/songList/songList';
 import Playlist from '../../components/sections/playlist/playlist';
@@ -37,7 +37,7 @@ const MainSection = ({ user, view }) => {
       <div className="main-section-container">
         {components[view]}
       </div>
-      <Footer />
+
     </div>
   );
 };

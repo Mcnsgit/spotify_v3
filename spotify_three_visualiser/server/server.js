@@ -23,27 +23,31 @@ const generateRandomString = length => {
 
 // Middleware to verify access token
 const verifyAccessToken = (req, res, next) => {
-  if (!req.query.access_token) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Access token is required' });
   }
+  const accessToken = authHeader.split(' ')[1];
+  req.accessToken = accessToken;
   next();
 };
-
 // Spotify API request helper
-const spotifyApiRequest = async (url, method, params, accessToken) => {
+async function spotifyApiRequest(url, method, params, accessToken) {
   try {
     const response = await axios({
       method,
       url: `https://api.spotify.com/v1${url}`,
       params,
-      headers: { 'Authorization': `Bearer ${accessToken}` },
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      },
     });
     return response.data;
   } catch (error) {
-    console.error(`Spotify API request to ${url} failed:`, error.response || error);
-    throw new Error(error.response?.data.error.message || 'Spotify API request failed');
+    console.error(`${method} request to ${url} failed:`, error);
+    throw error;
   }
-};
+}
 
 // Login endpoint
 app.get('/auth/login', (req, res) => {
@@ -88,6 +92,7 @@ app.get('/auth/callback', async (req, res) => {
   }
 });
 
+
 // Refresh token endpoint
 app.post('/auth/refresh', async (req, res) => {
   const { refresh_token } = req.body;
@@ -108,6 +113,34 @@ app.post('/auth/refresh', async (req, res) => {
   }
 });
 
+app.get('/me/player/devices', verifyAccessToken, async (req, res) => {
+  try {
+    const data = await spotifyApiRequest('/me/player/devices', 'get', {}, req.accessToken);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/me/player', verifyAccessToken, async (req, res) => {
+  try {
+    const data = await spotifyApiRequest('/me/player', 'put', req.body, req.query.access_token);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/me/player/play', verifyAccessToken, async (req, res) => {
+  try { 
+    const data = await spotifyApiRequest('/me/player/play', 'put', {}, req.query.access_token);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 // Search tracks
 app.get('/auth/search', verifyAccessToken, async (req, res) => {
   try {
@@ -117,6 +150,8 @@ app.get('/auth/search', verifyAccessToken, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
 
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
