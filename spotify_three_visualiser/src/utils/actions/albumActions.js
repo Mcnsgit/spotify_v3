@@ -1,4 +1,4 @@
-import axios from '../../axios';
+import {serverApi} from '../../axios';
 
 const fetchAlbumSuccess = album => {
   return {
@@ -31,8 +31,8 @@ export const fetchAlbum = id => {
       return error;
     }
     try {
-      const album = await axios.get(`/albums/${id}`);
-      const tracks = await axios.get(`/albums/${id}/tracks?limit=50`);
+      const album = await serverApi.get(`/albums/${id}`);
+      const tracks = await serverApi.get(`/albums/${id}/tracks?limit=50`);
       return onSuccess({ ...album.data, tracks: tracks.data.items });
     } catch (error) {
       return onError(error);

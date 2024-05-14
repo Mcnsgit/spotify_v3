@@ -15,7 +15,7 @@ import DetailSection from '../audiocomponent/detailsSection';
 import SongControls from '../audiocomponent/audioControls/AudioControls'; 
 import VolumeControls from '../audiocomponent/volumeControls.js/VolumeControls';
 import './MusicPlayer.scss'
-import SongSlider from '../audiocomponent/SongSlider';
+import SongSlider from '../audiocomponent/songSlider/SongSlider'
 
 
 

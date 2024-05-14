@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Header from '../playlists/playlist/components/header/playlistHeader';
-import Table from '../../songList/songsTable/albumTable/albumTable';
+import Header from '../playlist/components/header/playlistHeader';
+import Table from '../../songsTable/albumTable/albumTable';
 import Spinner from '../../spinner/spinner';
-import withStatus from '../../../hoc/statusHoc';
+import {statusHoc as withStatus} from '../../../hoc/statusHoc';
 
 class Album extends Component {
   render = () => {

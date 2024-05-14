@@ -1,4 +1,4 @@
-import axios from "../../axios";
+import {serverApi} from "../../axios";
 
 const fetchPlaylistMenuPending = () => {
   return {
@@ -36,7 +36,7 @@ export const movePlaylistSong = (playlist, range_start, insert_before) => {
         insert_before: insert_before === 0 ? insert_before : insert_before + 1,
         snapshot_id: playlist.snapshot_id
       };
-      const response = await axios.put(
+      const response = await serverApi.put(
         `/playlists/${playlist.id}/tracks`,
         data
       );
@@ -54,7 +54,7 @@ export const fetchPlaylistsMenu = () => {
   return async dispatch => {
     dispatch(fetchPlaylistMenuPending());
     try {
-      const response = await axios.get("/me/playlists");
+      const response = await serverApi.get("/me/playlists");
       dispatch(fetchPlaylistMenuSuccess(response.data));
       return response.data;
     } catch (error) {
@@ -106,7 +106,7 @@ const dispacher = a => {
 export const followPlaylist = () => {
   return async (dispatch, getState) => {
     const id = getState().playlistReducer.playlist.id;
-    axios.put(`/playlists/${id}/followers`);
+    serverApi.put(`/playlists/${id}/followers`);
     dispatch(
       dispacher({
         type: "FOLLOW_PLAYLIST"
@@ -118,7 +118,7 @@ export const followPlaylist = () => {
 export const unfollowPlaylist = () => {
   return async (dispatch, getState) => {
     const id = getState().playlistReducer.playlist.id;
-    axios.delete(`/playlists/${id}/followers`);
+    serverApi.delete(`/playlists/${id}/followers`);
     dispatch(
       dispacher({
         type: "UNFOLLOW_PLAYLIST"
@@ -132,7 +132,7 @@ export const fetchMoreSongs = () => {
     try {
       const next = getState().playlistReducer.playlist.tracks.next;
       if (next) {
-        const response = await axios.get(next);
+        const response = await serverApi.get(next);
         dispatch(fetchMoreSuccess(response.data.items, response.data.next));
         return response;
       }
@@ -152,8 +152,8 @@ export const fetchPlaylist = id => {
     }
     try {
       const userId = getState().userReducer.user.id;
-      const playlist = await axios.get(`/playlists/${id}`);
-      const follows = await axios.get(
+      const playlist = await serverApi.get(`/playlists/${id}`);
+      const follows = await serverApi.get(
         `/playlists/${id}/followers/contains?ids=${userId}`
       );
       return onSuccess({

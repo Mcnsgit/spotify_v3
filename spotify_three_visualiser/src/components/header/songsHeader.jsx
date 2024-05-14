@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './songsHeader.scss';
+import './songsHeader.css';
 
 const simpleHeader = props => (
   <div>

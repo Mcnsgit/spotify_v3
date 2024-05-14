@@ -1,7 +1,7 @@
-import axios from '../../axios';
+import  { serverApi } from '../../axios';
 
 export const accessToken = accessToken => {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+  serverApi.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
   localStorage.setItem('accessToken', accessToken);
   return {
     type: 'SET_TOKEN',
@@ -10,7 +10,7 @@ export const accessToken = accessToken => {
 };
 
 export const setActiveDevice = id => {
-  axios.put('/me/player', { device_ids: [id], play: false });
+ serverApi.put('/me/player', { device_ids: [id], play: false });
   return { type: 'SET_DEVICE' };
 };
 

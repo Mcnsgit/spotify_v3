@@ -1,5 +1,5 @@
 import React from 'react';
-import withStatus from '../../../../../hoc/statusHoc';
+import {statusHoc as withStatus} from '../../../../../hoc/statusHoc';
 
 const song = props => {
   const active = props.currentSong === props.item.id && props.playing;

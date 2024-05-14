@@ -4,8 +4,8 @@ import Login from "./screens/Login";
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './screens/Dashboard';
 import Profile from './screens/Profile';
-import MusicPlayer from "./components/visualMusicContainer/MusicPlayer.js";
-import Playlists from "./components/sections/playlists/modal.js";
+// import MusicPlayer from "./components/visualMusicContainer/MusicPlayer.js";
+// import Playlists from "./components/sections/playlists/modal.js";
 import SpotifyApi from "./screens/SpotifyApi";
 import { Provider } from 'react-redux';
 import { store } from './index.js';
@@ -40,8 +40,8 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/playlists" element={<Playlists />} />
-          <Route path="/musicplayer" element={<MusicPlayer />} />
+
+          {/* <Route path="/musicplayer" element={<MusicPlayer />} /> */}
           <Route path="/callback" element={<SpotifyApi />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

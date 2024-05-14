@@ -1,50 +1,41 @@
-export const playlistReducer = (state = {}, action) => {
+const defaultState = {
+  artistIds: ''
+};
+
+export const artistsReducer = (state = defaultState, action) => {
+
   switch (action.type) {
-    case 'FETCH_ARTIST_PENDING':
-      return {
-        ...state,
-        fetchArtistPending: true
-      };
 
-    case 'FETCH_ARTIST_SUCCESS':
-      return {
-        ...state,
-        currentArtist: action.artist,
-        fetchArtistError: false,
-        fetchArtistPending: false
-      };
+  case "SET_ARTIST_IDS":
+    return {
+      ...state,
+      artistIds: action.artistIds
+    };
 
-    case 'FETCH_ARTIST_ERROR':
-      return {
-        ...state,
-        fetchArtistError: true,
-        fetchArtistPending: false
-      };
-    case 'FETCH_ALBUMS_SUCCESS':
-      return {
-        ...state,
-        currentArtist: { ...state.currentArtist, ...action.albums }
-      };
-    case 'FETCH_POPULAR_SUCCESS':
-      return {
-        ...state,
-        currentArtist: { ...state.currentArtist, ...action.popular }
-      };
-    case 'FOLLOW_ARTIST':
-      return {
-        ...state,
-        currentArtist: { ...state.currentArtist, follows: true }
-      };
+  case "FETCH_ARTISTS_PENDING":
+    return {
+      ...state,
+      fetchArtistsPending: true
+    };
 
-    case 'UNFOLLOW_ARTIST':
-      return {
-        ...state,
-        currentArtist: { ...state.currentArtist, follows: false }
-      };
+  case "FETCH_ARTISTS_SUCCESS":
+    return {
+      ...state,
+      artistList: action.artists,
+      fetchArtistsError: false,
+      fetchArtistsPending: false
+    };
 
-    default:
-      return state;
+  case "FETCH_ARTISTS_ERROR":
+    return {
+      ...state,
+      fetchArtistsError: true,
+      fetchArtistsPending: false
+    };
+
+  default:
+    return state;
   }
 };
 
-export default playlistReducer;
+export default artistsReducer;

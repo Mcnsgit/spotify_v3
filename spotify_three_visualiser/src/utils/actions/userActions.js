@@ -1,4 +1,4 @@
-import axios from '../../axios';
+import  { serverApi } from '../../axios';
 
 const fetchUserSuccess = user => {
   return {
@@ -16,7 +16,7 @@ const fetchUserError = () => {
 export const fetchUser = () => {
   return async dispatch => {
     try {
-      const response = await axios.get('/me');
+      const response = await serverApi.get('/me');
       dispatch(fetchUserSuccess(response.data));
       return response.data;
     } catch (error) {

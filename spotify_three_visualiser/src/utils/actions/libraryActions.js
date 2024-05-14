@@ -1,4 +1,4 @@
-import axios from '../../axios';
+import {serverApi} from '../../axios';
 
 const fetchSongsPending = () => {
   return {
@@ -35,7 +35,7 @@ const containsSongSuccess = contains => {
 };
 
 export const removeSong = (id, current = false) => {
-  axios.delete(`/me/tracks?ids=${id}`);
+  serverApi.delete(`/me/tracks?ids=${id}`);
   return {
     type: 'REMOVE_SONG_SUCCESS',
     current: current
@@ -43,7 +43,7 @@ export const removeSong = (id, current = false) => {
 };
 
 export const addSong = (id, current = false) => {
-  axios.put(`/me/tracks?ids=${id}`);
+  serverApi.put(`/me/tracks?ids=${id}`);
   return {
     type: 'ADD_SONG_SUCCESS',
     current: current
@@ -53,7 +53,7 @@ export const addSong = (id, current = false) => {
 export const containsCurrentSong = id => {
   return async dispatch => {
     try {
-      const response = await axios.get(`/me/tracks/contains?ids=${id}`);
+      const response = await serverApi.get(`/me/tracks/contains?ids=${id}`);
       dispatch(containsSongSuccess(response, true));
       return response.data;
     } catch (error) {
@@ -65,7 +65,7 @@ export const containsCurrentSong = id => {
 export const containsSong = id => {
   return async () => {
     try {
-      const response = await axios.get(`/me/tracks/contains?ids=${id}`);
+      const response = await serverApi.get(`/me/tracks/contains?ids=${id}`);
       return response.data;
     } catch (error) {
       return error;
@@ -77,7 +77,7 @@ export const fetchSongs = () => {
   return async dispatch => {
     dispatch(fetchSongsPending());
     try {
-      const response = await axios.get('/me/tracks?limit=25');
+      const response = await serverApi.get('/me/tracks?limit=25');
       dispatch(fetchSongsSuccess(response.data));
       return response.data;
     } catch (error) {
@@ -102,7 +102,7 @@ export const fetchMoreSongs = () => {
     const next = getState().libraryReducer.songs.next;
     try {
       if (next) {
-        const response = await axios.get(next);
+        const response = await serverApi.get(next);
         const songs = await filterRepeatedSongs(
           x => x.track.id,
           response.data.items
@@ -121,7 +121,7 @@ export const fetchRecentSongs = () => {
   return async dispatch => {
     dispatch(fetchSongsPending());
     try {
-      const response = await axios.get('/me/player/recently-played');
+      const response = await serverApi.get('/me/player/recently-played');
       const songs = await filterRepeatedSongs(
         x => x.track.id,
         response.data.items

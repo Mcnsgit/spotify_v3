@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import spotifyApi from '../../../axios';
+import {serverApi} from '../../../axios';
 
 import {
   fetchSongs,
@@ -10,9 +10,10 @@ import {
   fetchMoreSongs
 } from '../../../utils/actions/libraryActions';
 
-import Playlist from '../playlists/playlistTable/playlistTable';
+import Playlist from '../../songsTable/playlistTable/playlistTable';
 import Header from '../../header/songsHeader';
 import Spinner from '../../spinner/spinner';
+
 import {statusHoc as withStatus} from '../../../hoc/statusHoc';
 
 class SongsList extends Component {
@@ -30,7 +31,7 @@ class SongsList extends Component {
 
   playTracks = (context, offset) => {
     const songs = this.props.songs.slice(offset).map(s => s.track.uri);
-    spotifyApi.put('/me/player/play', { uris: songs });
+    serverApi.put('/me/player/play', { uris: songs });
   };
 
   render = () => (

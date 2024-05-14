@@ -8,23 +8,23 @@ import rootReducer from './utils/reducers/rootReducer';
 import { BrowserRouter } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 
-export const store = configureStore({
-  reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
-  devTools: process.env.NODE_ENV !== 'production',
-});
+  export const store = configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+    devTools: process.env.NODE_ENV !== 'production',
+  });
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <>
-  <StrictMode>
-    <ErrorBoundary>
-      <BrowserRouter>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </BrowserRouter>
-    </ErrorBoundary>
-  </StrictMode>
-  </>
-);
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(
+    <>
+    <StrictMode>
+      <ErrorBoundary>
+        <BrowserRouter>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </BrowserRouter>
+      </ErrorBoundary>
+    </StrictMode>
+    </>
+  );

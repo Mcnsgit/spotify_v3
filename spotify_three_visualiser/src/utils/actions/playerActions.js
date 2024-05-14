@@ -1,4 +1,4 @@
-import axios from '../../axios';
+import {serverApi} from '../../axios';
 
 export const setStatus = status => {
   return {
@@ -8,14 +8,14 @@ export const setStatus = status => {
 };
 
 export const nextSong = () => {
-  axios.post('/me/player/next');
+  serverApi.post('/me/player/next');
   return {
     type: 'CHANGE_SONG'
   };
 };
 
 export const previousSong = () => {
-  axios.post('/me/player/previous');
+  serverApi.post('/me/player/previous');
   return {
     type: 'CHANGE_SONG'
   };
@@ -23,17 +23,17 @@ export const previousSong = () => {
 
 export const playSong = (context = false, offset) => {
   if (context && offset) {
-    axios.put('/me/player/play', {
+    serverApi.put('/me/player/play', {
       context_uri: context,
       offset: { position: offset }
     });
   } else {
     if (context) {
-      axios.put('/me/player/play', {
+      serverApi.put('/me/player/play', {
         context_uri: context
       });
     } else {
-      axios.put('/me/player/play');
+      serverApi.put('/me/player/play');
     }
   }
   return {
@@ -42,7 +42,7 @@ export const playSong = (context = false, offset) => {
 };
 
 export const playTracks = (tracks, offset) => {
-  axios.put('/me/player/play', {
+  serverApi.put('/me/player/play', {
     uris: tracks,
     offset: { position: offset }
   });
@@ -52,28 +52,28 @@ export const playTracks = (tracks, offset) => {
 };
 
 export const pauseSong = () => {
-  axios.put('/me/player/pause');
+  serverApi.put('/me/player/pause');
   return {
     type: 'PAUSE_STATE'
   };
 };
 
 export const seekSong = ms => {
-  axios.put(`/me/player/seek?position_ms=${ms}`);
+  serverApi.put(`/me/player/seek?position_ms=${ms}`);
   return {
     type: 'SEEK_SONG'
   };
 };
 
 export const repeatContext = status => {
-  axios.put(`/me/player/repeat?state=${status}`);
+  serverApi.put(`/me/player/repeat?state=${status}`);
   return {
     type: 'REPEAT'
   };
 };
 
 export const shuffle = status => {
-  axios.put(`/me/player/shuffle?state=${status}`);
+  serverApi.put(`/me/player/shuffle?state=${status}`);
   return {
     type: 'Shuffle'
   };
