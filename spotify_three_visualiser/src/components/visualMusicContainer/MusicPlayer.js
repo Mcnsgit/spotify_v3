@@ -1,28 +1,15 @@
 import React, { Component } from 'react';
-// import { connect } from "react-redux";
-// import {setToken} from "../../utils/actions/sessionActions";
-// import webPlayback from '../audiocomponent/webPlayback';
-// import { bindActionCreators } from "redux";
 import ErrorBoundary from '../ErrorBoundary';
-// import TrackSearchResult from '../sections/searchcontainer/TrackSearchResults';
-// import './styles.css';
-// import { Link } from "react-router-dom";
-// import SpotifyPlayer from 'react-spotify-web-playback';
-// import { lazy, Suspense, useState, useEffect } from 'react';
-import withPlayer from '../../hoc/playerHoc';
-// import AudioComponent from '../audiocomponent/AudioComponent';
-import DetailSection from '../songsPlayer/components/detailsSection'; 
-import SongControls from '../songsPlayer/components/songsControl'; 
-import VolumeControl from '../songsPlayer/components/volumeControl';
-import './MusicPlayer.scss'
+import DetailSection from '../songsPlayer/components/detailsSection';
+import SongControls from '../songsPlayer/components/songsControl';
 import ProgressBar from '../songsPlayer/components/songSider';
-
-
+import VolumeControl from '../songsPlayer/components/volumeControl';
+import './MusicPlayer.scss';
 
 class MusicPlayer extends Component {
-  toSeconds = ms => ms / 1000;
+  toSeconds = (ms) => ms / 1000;
 
-  render = () => {
+  render() {
     const position = this.toSeconds(this.props.trackPosition);
     const duration = this.props.currentSong
       ? this.toSeconds(this.props.currentSong.duration_ms)
@@ -31,44 +18,35 @@ class MusicPlayer extends Component {
     return (
       <ErrorBoundary>
         <div className="player-container">
-        {this.props.currentSong.id ? (
-          <DetailSection
-            ids={
-              this.props.currentSong.linked_from.id
-                ? `${this.props.currentSong.linked_from.id},${
-                    this.props.currentSong.id
-                  }`
-                : this.props.currentSong.id
-            }
-            contains={this.props.contains}
-            songName={this.props.currentSong.name || ''}
-            album={this.props.currentSong.album.uri.split(':')[2]}
-            artists={this.props.currentSong.artists || []}
-          />
-        ) : null}
-        <SongControls 
-          {...this.props}
-          />
+          {this.props.currentSong?.id ? (
+            <DetailSection
+              ids={
+                this.props.currentSong.linked_from?.id
+                  ? `${this.props.currentSong.linked_from.id},${this.props.currentSong.id}`
+                  : this.props.currentSong.id
+              }
+              contains={this.props.contains}
+              songName={this.props.currentSong.name || ''}
+              album={this.props.currentSong.album.uri.split(':')[2]}
+              artists={this.props.currentSong.artists || []}
+            />
+          ) : null}
+          <SongControls {...this.props} />
           <ProgressBar
-          isEnabled
-          value={position / duration}
-          position={position}
-          duration={duration}
-          onChange={value =>
-            this.props.seekSong(Math.round(value * duration * 1000))
-          }
+            value={position / duration}
+            position={position}
+            duration={duration}
+            onChange={(value) => this.props.seekSong(Math.round(value * duration * 1000))}
           />
-          <VolumeControl />          
-          </div>
-        </ErrorBoundary>
-      );
-  };
+          <VolumeControl />
+        </div>
+      </ErrorBoundary>
+    );
+  }
 }
 
-export default withPlayer(MusicPlayer);
+export default MusicPlayer;
 
-
-  
 //     }
 //   const [play, setPlay] = useState(false);
 

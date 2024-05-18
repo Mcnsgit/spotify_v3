@@ -6,7 +6,7 @@ import Dashboard from './screens/Dashboard';
 import Profile from './screens/Profile';
 // import MusicPlayer from "./components/visualMusicContainer/MusicPlayer.js";
 // import Playlists from "./components/sections/playlists/modal.js";
-import SpotifyApi from "./screens/SpotifyApi";
+import {} from "./screens/SpotifyApi";
 import { Provider } from 'react-redux';
 import { store } from './index.js';
 import { AppProvider } from "./utils/AppContextProvider.js";
@@ -42,7 +42,6 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
 
           {/* <Route path="/musicplayer" element={<MusicPlayer />} /> */}
-          <Route path="/callback" element={<SpotifyApi />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
     </div>

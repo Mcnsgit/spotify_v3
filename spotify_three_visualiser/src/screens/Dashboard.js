@@ -1,13 +1,17 @@
 import React,{ Component } from 'react';
 import { Container } from 'react-bootstrap';
-
-
-import MainSection from '../containers/mainSection/mainSection';
-import './dashboard.module.css';
 import { connect } from 'react-redux';
 
 
-import SongPlayer from '../components/visualMusicContainer/MusicPlayer';  // Controls for music playback
+// import MainSection from '../containers/mainSection/mainSection';
+import './dashboard.module.css';
+// import Songs from '../components/sections/songList/songList';
+// import Playlist from '../components/sections/playlist/playlist';
+// import Search from '../components/sections/search/search';
+// import Modal from '../components/playlistModal/modal';
+// import defaultProfile from '../images/profile.png';
+
+import MusicPlayer from '../components/visualMusicContainer/MusicPlayer';  // Controls for music playback
 
 import WebPlaybackReact from './webPlayback';
 
@@ -45,17 +49,8 @@ class Dashboard extends Component {
         <WebPlaybackReact {...webPlaybackSdkProps} />
       </header>
       <div className="d-flex flex-grow-1">
-
-            <MainSection />
-
+        <MusicPlayer />
       </div>
-      <div className="d-flex flex-grow-1">
-        <SongPlayer />
-
-      </div>
-      
-
-      
     </Container>
   );
 };

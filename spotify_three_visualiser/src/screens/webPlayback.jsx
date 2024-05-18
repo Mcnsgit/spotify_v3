@@ -1,152 +1,59 @@
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, { useEffect, useState } from 'react';
+import {  } from "./SpotifyApi";
 
-import { setStatus } from '../utils/actions/playerActions';
-import { setDeviceId, setActiveDevice } from '../utils/actions/sessionActions';
+const SpotifyPlayer = ({ accessToken }) => {
+  const [isReady, setReady] = useState(false);
+  const [player, setPlayer] = useState(null);
 
-class WebPlayback extends Component {
-  deviceSelectedInterval = null;
-  statePollingInterval = null;
-  webPlaybackInstance = null;
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://sdk.scdn.co/spotify-player.js';
+    script.async = true;
+    document.body.appendChild(script);
 
-  state = {
-    playerReady: false,
-    playerSelected: false
-  };
-
-  async handleState(state) {
-    if (state) {
-      this.props.setStatus(state);
-    } else {
-      this.clearStatePolling();
-      await this.waitForDeviceToBeSelected();
-    }
-  }
-
-  waitForSpotify() {
-    return new Promise(resolve => {
-      if ('Spotify' in window) {
-        resolve();
-      } else {
-        window.onSpotifyWebPlaybackSDKReady = () => {
-          resolve();
-        };
-      }
-    });
-  }
-
-  waitForDeviceToBeSelected() {
-    return new Promise(resolve => {
-      this.deviceSelectedInterval = setInterval(() => {
-        if (this.webPlaybackInstance) {
-          this.webPlaybackInstance.getCurrentState().then(state => {
-            if (state !== null) {
-              this.startStatePolling();
-              clearInterval(this.deviceSelectedInterval);
-              resolve(state);
-            }
-          });
-        }
+    script.onload = () => {
+      const player = new window.Spotify.Player({
+        name: 'Web Playback SDK Quick Start Player',
+        getOAuthToken: cb => { cb(accessToken); },
+        volume: 0.5,
       });
-    });
-  }
 
-  startStatePolling() {
-    this.statePollingInterval = setInterval(async () => {
-      let state = await this.webPlaybackInstance.getCurrentState();
-      await this.handleState(state);
-    }, this.props.playerRefreshRateMs || 1000);
-  }
-
-  clearStatePolling() {
-    clearInterval(this.statePollingInterval);
-  }
-
-  async setupWebPlaybackEvents() {
-    const { Player } = window.Spotify;
-
-    this.webPlaybackInstance = new Player({
-      name: this.props.playerName,
-      volume: this.props.playerInitialVolume,
-      getOAuthToken: async callback => {
-        if (typeof this.props.onPlayerRequestAccessToken !== 'undefined') {
-          let userAccessToken = await this.props.onPlayerRequestAccessToken();
-          callback(userAccessToken);
-        }
-      }
-    });
-
-    this.webPlaybackInstance.on('initialization_error', e => {
-      this.props.onPlayerError(e.message);
-    });
-
-    this.webPlaybackInstance.on('authentication_error', e => {
-      this.props.onPlayerError(e.message);
-    });
-
-    this.webPlaybackInstance.on('account_error', e => {
-      this.props.onPlayerError(e.message);
-    });
-
-    this.webPlaybackInstance.on('playback_error', e => {
-      this.props.onPlayerError(e.message);
-    });
-
-    this.webPlaybackInstance.on('player_state_changed', async state => {
-      await this.handleState(state);
-    });
-
-    this.webPlaybackInstance.on('ready', data => {
-      this.props.setDeviceId(data.device_id);
-      this.props.setActiveDevice(data.device_id);
-    });
-
-    if (this.props.playerAutoConnect) {
-      this.webPlaybackInstance.connect();
-    }
-  }
-
-  setupWaitingForDevice() {
-    return new Promise(resolve => {
-      this.webPlaybackInstance.on('ready', data => {
-        resolve(data);
+      player.addListener('ready', ({ device_id }) => {
+        console.log('Ready with Device ID', device_id);
+        setReady(true);
       });
-    });
-  }
 
-  async componentDidMount() {
-    // Notify the player is loading
-    this.props.onPlayerLoading();
+      player.addListener('not_ready', ({ device_id }) => {
+        console.log('Device ID has gone offline', device_id);
+      });
 
-    // Wait for Spotify to load player
-    await this.waitForSpotify();
+      player.addListener('initialization_error', ({ message }) => {
+        console.error('Initialization error:', message);
+      });
 
-    // Setup the instance and the callbacks
-    await this.setupWebPlaybackEvents();
+      player.addListener('authentication_error', ({ message }) => {
+        console.error('Authentication error:', message);
+      });
 
-    // Wait for device to be ready
-    let device_data = await this.setupWaitingForDevice();
-    this.props.onPlayerWaitingForDevice(device_data);
+      player.addListener('account_error', ({ message }) => {
+        console.error('Account error:', message);
+      });
 
-    // Wait for device to be selected
-    await this.waitForDeviceToBeSelected();
-    this.props.onPlayerDeviceSelected();
-  }
+      player.connect();
+      setPlayer(player);
+    };
+  }, [accessToken]);
 
-  render() {
-    return <Fragment>{this.props.children}</Fragment>;
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    { setDeviceId, setActiveDevice, setStatus },
-    dispatch
+  return (
+    <div>
+      <h1>Spotify Web Playback SDK Quick Start</h1>
+      {isReady ? (
+        <button onClick={() => player.togglePlay()}>Toggle Play</button>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
   );
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(WebPlayback);
+export default SpotifyPlayer;

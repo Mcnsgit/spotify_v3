@@ -1,0 +1,31 @@
+
+    @emotion/react
+    @react-three/fiber
+    @reduxjs/toolkit
+
+    types/three": "^0.164.0",
+
+    bootstrap
+    "chai
+    "cors
+    "enzyme
+    "eslint
+    "flowbite-react
+    "framer-motion
+    "lodash
+    "prettier
+    
+    "moment
+    "react
+    "react-dom
+    react-icons
+    
+    react-spring
+    react-scripts
+
+
+    gh-pages  react-bootstrap    react-infinite-scroller react-spotify-web-playback react-drag-listview react-redux redux redux-thunk spotify-web-api-node styled-components react-pro-sidebar
+    
+    "react-p5
+    three
+    react-three-fiber

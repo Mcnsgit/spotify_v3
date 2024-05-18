@@ -1,18 +1,18 @@
+// import Albums from '../../components/sections/top/albums';
+// import Artists from '../../components/sections/top/artists';
+// import Browse from '../../components/sections/browse/browser';
+// import Artist from '../../components/sections/artist/artist';
+// import Album from '../../components/sections/album/album';
 import React from 'react';
 import { connect } from 'react-redux';
 import Header from '../../components/header/header';
 
-// import Browse from '../../components/sections/browse/browser';
+import './mainSection.css';
 import Songs from '../../components/sections/songList/songList';
 import Playlist from '../../components/sections/playlist/playlist';
-// import Artist from '../../components/sections/artist/artist';
-// import Album from '../../components/sections/album/album';
 import Search from '../../components/sections/search/search';
-// import Albums from '../../components/sections/top/albums';
-// import Artists from '../../components/sections/top/artists';
 import Modal from '../../components/playlistModal/modal';
 import defaultProfile from './images/profile.png';
-import './mainSection.css';
 
 const MainSection = ({ user, view }) => {
   const name = user?.display_name || 'Default Name';
